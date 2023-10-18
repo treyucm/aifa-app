@@ -7,11 +7,14 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import * as firebase from 'firebase/auth';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   userData: any; // Save logged in user data
+  private user: Observable<firebase.User>;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
@@ -20,7 +23,7 @@ export class AuthService {
   ) {
     /* Saving user data in localstorage when 
     logged in and setting up null when logged out */
-    this.afAuth.authState.subscribe((user) => {
+    this.afAuth.authState.subscribe((user : User) => {
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
@@ -31,6 +34,7 @@ export class AuthService {
       }
     });
   }
+
   // Sign in with email/password
   SignIn(email: string, password: string) {
     return this.afAuth
@@ -98,6 +102,7 @@ export class AuthService {
       .then((result) => {
         this.router.navigate(['dashboard']);
         this.SetUserData(result.user);
+        //return this.user;
       })
       .catch((error) => {
         window.alert(error);

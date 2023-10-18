@@ -18,6 +18,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { initializeApp } from 'firebase/app';
+import { GalleryComponent } from './gallery/gallery.component';
 
 const myapp = initializeApp(environment.firebase);
 
@@ -29,7 +30,8 @@ const myapp = initializeApp(environment.firebase);
     SignInComponent,
     SignUpComponent,
     ForgotPasswordComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    GalleryComponent
   ],
   imports: [
     BrowserModule,

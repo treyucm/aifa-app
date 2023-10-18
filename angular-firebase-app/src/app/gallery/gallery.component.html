@@ -1,0 +1,8 @@
+<div class = 'row' (load)="this.imageService.listFiles()">
+    <h2>Latest Photos</h2>
+        <ng-container *ngFor="let i of imageService.imgList">
+            <tr>
+                <img src="{{i}}">
+            </tr>
+        </ng-container>
+</div>

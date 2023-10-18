@@ -143,6 +143,8 @@ firebase/messaging
 
 firebase/remote-config
 
+firebase/storage
+
 idb
 ISC
 ISC License (ISC)
