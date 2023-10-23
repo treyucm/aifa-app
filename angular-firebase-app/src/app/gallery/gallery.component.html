@@ -2,7 +2,7 @@
     <h2>Latest Photos</h2>
         <ng-container *ngFor="let i of imageService.imgList">
             <tr>
-                <img src="{{i}}">
+                <img src="{{i}}" (click)="imageService.deleteData($event)">
             </tr>
         </ng-container>
 </div>

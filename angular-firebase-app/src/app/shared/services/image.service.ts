@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
-import { getStorage, ref, uploadBytesResumable, listAll } from "firebase/storage";
+import { Injectable, OnInit } from '@angular/core';
+import { getStorage, ref, uploadBytesResumable, listAll, deleteObject } from "firebase/storage";
 import { getDownloadURL } from "@angular/fire/storage";
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireDatabase } from '@angular/fire/compat/database'
-import { FirebaseApp } from '@angular/fire/app';
+import { FirebaseApp, FirebaseError } from '@angular/fire/app';
 import 'firebase/storage';
 import { GalleryImage } from '../models/galleryImage.model';
 import { AuthService } from './auth.service';
+import { LOCATION_INITIALIZED } from '@angular/common';
+
 //import * as firebase from 'firebase/';
 
 
@@ -16,7 +18,7 @@ import { AuthService } from './auth.service';
 })
 export class ImageService {
 
-  public uid: string;
+  private uid: string;
 
   constructor( private afAuth: AngularFireAuth, private db: AngularFireDatabase, private authService: AuthService ) {
     this.afAuth.authState.subscribe(auth => {
@@ -29,15 +31,18 @@ export class ImageService {
   public imgList: any = [];
   public storage = getStorage();
   public file: any = {};
+  public deleteFile: any = {};
+  private fileExists: boolean;
+  private canCreate: boolean;
+  //private storageRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid + "/"+this.file.name);
+  //private deleteRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid + "/"+this.deleteFile.name)
+  //private listRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid);
 
-
-  getImages() {
+  imageDetails() {
     //console.log(this.storage);
     //return this.db.list('uploads').valueChanges();
-    console.log("simple test getImages");
+    //let dialogRef = dialog.
   }
-
-
   listFiles(){
       const listRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid);
       listAll(listRef)
@@ -91,41 +96,76 @@ export class ImageService {
     });
     */
   }
-
-  onFileChange(event:any){
+  async onFileChange(event:any){
     this.file = event.target.files[0]
-    console.log(this.file);
-    /*if(file){
-      console.log(file);
-      const path = 'yt/${file.name}'
-      const uploadTask = await this.storage.upload(path,file);
-      const url = await uploadTask.ref.getDownloadURL();
-      console.log(url);
-    }*/
+    //console.log(this.file);
+    await this.getImageUrl();
+    if(this.fileExists == false){
+      this.canCreate = true;
+    }else if(this.fileExists == true){
+      this.canCreate = false;
+      //console.log(this.canCreate)
+    }
   }
-  addData(){
-    const storageRef = ref(this.storage, 'users/' + this.uid + "/"+this.file.name);
-    const uploadTask = uploadBytesResumable(storageRef, this.file);
-   // for(var i = 0; i < this.imgList.length; i++){
-     //   if (){
+  async getImageUrl() {
+    try{
+      const storageRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid + "/"+this.file.name);
+      const checkURL = await getDownloadURL(storageRef);
+      this.fileExists = true;
+      return checkURL;
+    }catch(e){
+      (e as FirebaseError).code == 'object-not-found'
+        ? console.log('$category has no image for $imageId')
+        : console.log('Error fetching image: $e');
+        return this.fileExists = false;
+    }
+  }
+  ngOnInit(){
+    console.log("reinitializing...?")
+  }
 
-     //   }
-    //}
-    uploadTask.on('state_changed', 
-    (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Upload is ' + progress + '% done');
-    },
-    () => {
-      // Upload completed successfully, now we can get the download URL
-      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-        console.log('File available at', downloadURL);
-      
-      });
-    })
+  deleteData(event:any){
+    this.deleteFile = event.target.src;
+    var deleteRef = ref(this.storage, this.deleteFile)
+    console.log("deleting " + this.deleteFile)
     
+    const deleteTask = deleteObject(deleteRef)
+    deleteTask.then((deletedFile) => {
+      console.log(deletedFile +' deleted')
+      location.reload();
+    }).catch((error)=>{
+      console.log("error occurred");
+    })
   }
 
 
+  addData(){
+    if(this.canCreate === true){
+      console.log(this.canCreate + "uploading...")
+      const storageRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid + "/"+this.file.name);
+      const uploadTask = uploadBytesResumable(storageRef, this.file);
 
+      uploadTask.then((snapshot) => {
+        location.reload();
+      })
+
+      /*uploadTask.on('state_changed', 
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+      },
+      () => {
+        console.log("upload success..")
+        // Upload completed successfully, now we can get the download URL
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+          location.reload();
+        });
+      });*/
+    }else if(this.canCreate === false){
+      console.log("Could not upload...");
+    }else{
+      console.log("data uninitialized")
+    }
+  }
 }
