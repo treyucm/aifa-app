@@ -9,7 +9,10 @@ import 'firebase/storage';
 import { GalleryImage } from '../models/galleryImage.model';
 import { AuthService } from './auth.service';
 import { LOCATION_INITIALIZED } from '@angular/common';
-
+import { MatDialogModule, MatDialogRef, MatDialog} from '@angular/material/dialog'
+//import { MatDialog } from '@angular/material'
+import { ImageDetailComponent } from 'src/app/image-detail/image-detail.component';
+import { GalleryComponent } from 'src/app/gallery/gallery.component';
 //import * as firebase from 'firebase/';
 
 
@@ -20,7 +23,11 @@ export class ImageService {
 
   private uid: string;
 
-  constructor( private afAuth: AngularFireAuth, private db: AngularFireDatabase, private authService: AuthService ) {
+  constructor( private afAuth: AngularFireAuth, 
+    private db: AngularFireDatabase, 
+    private authService: AuthService, 
+    public dialog: MatDialog,
+    ) {
     this.afAuth.authState.subscribe(auth => {
       if(auth !== undefined && auth !== null ){
         this.uid = auth.uid;
@@ -34,35 +41,59 @@ export class ImageService {
   public deleteFile: any = {};
   private fileExists: boolean;
   private canCreate: boolean;
+  public canGenerateGallery: boolean;
   //private storageRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid + "/"+this.file.name);
   //private deleteRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid + "/"+this.deleteFile.name)
   //private listRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid);
 
-  imageDetails() {
+  imageDetails(event) {
     //console.log(this.storage);
     //return this.db.list('uploads').valueChanges();
-    //let dialogRef = dialog.
+    this.deleteFile = event.target.src;
+    let dialogRef = this.dialog.open(ImageDetailComponent, {
+      height: '400px',
+      width: '600px',
+      hasBackdrop: true,
+    })
   }
-  listFiles(){
+
+  closeDetails(){
+    this.dialog.closeAll();
+  }
+  
+  async listFiles(){
       const listRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid);
+      //this.canGenerateGallery = false;
       listAll(listRef)
     .then((res) => {
-      res.prefixes.forEach((folderRef) => {
+
+      console.log(res.items.length);
+      /*res.prefixes.forEach((folderRef) => {
         // All the prefixes under listRef.
         // You may call listAll() recursively on them.
-        listAll(folderRef);
-      });
+        //listAll(folderRef);
+      });*/
       res.items.forEach((itemRef) => {
         // All the items under listRef.
+        
           getDownloadURL(itemRef).then((downloadURL) => {
             console.log('File available at ', downloadURL);
             this.imgList.push(downloadURL);
+            if(res.items.length == this.imgList.length){
+              this.canGenerateGallery = true;
+              console.log("gallery ready!" + this.canGenerateGallery)
+              
+            }
+              //this.gallery.galleryBuild();
           });      
       });
+      //console.log("returning..." + this.imgList[0]);
+      //return this.imgList;
     })
     .catch((error) => {
       // Uh-oh, an error occurred!
     });
+    
    // })
     /*
     console.log(this.uid);
@@ -125,8 +156,9 @@ export class ImageService {
   }
 
   deleteData(event:any){
-    this.deleteFile = event.target.src;
-    var deleteRef = ref(this.storage, this.deleteFile)
+    if(window.confirm('Are sure you want to delete this item ?')){
+      //put your delete method logic here
+      var deleteRef = ref(this.storage, this.deleteFile)
     console.log("deleting " + this.deleteFile)
     
     const deleteTask = deleteObject(deleteRef)
@@ -136,6 +168,7 @@ export class ImageService {
     }).catch((error)=>{
       console.log("error occurred");
     })
+     }
   }
 
 

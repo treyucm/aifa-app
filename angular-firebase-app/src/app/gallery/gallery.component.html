@@ -1,8 +1,34 @@
-<div class = 'row' (load)="this.imageService.listFiles()">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+    <h1>Masonry Gallery</h1>
+
+   
+        <div class="gallery" id="gallery">
+        
+            <div class="gallery-item"*ngFor="let i of this.imgList">
+                <div class="content"><img src="{{i}}" alt=""></div>
+            </div>
+        
+        
+        
+       
+    </div>
+
+</body>   
+<!--
+
+<div class = 'row'>
     <h2>Latest Photos</h2>
         <ng-container *ngFor="let i of imageService.imgList">
             <tr>
-                <img src="{{i}}" (click)="imageService.deleteData($event)">
+                <img src="{{i}}" (click)="imageService.imageDetails($event)">
             </tr>
         </ng-container>
 </div>
+-->

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+//import { MatDialog} from '@angular/material/dialog'
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -20,6 +21,8 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { initializeApp } from 'firebase/app';
 import { GalleryComponent } from './gallery/gallery.component';
 import { ImageDetailComponent } from './image-detail/image-detail.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
 
 const myapp = initializeApp(environment.firebase);
 
@@ -44,8 +47,12 @@ const myapp = initializeApp(environment.firebase);
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     provideStorage(()=> getStorage()),
+    BrowserAnimationsModule,
+    MatDialogModule,
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
