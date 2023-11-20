@@ -23,6 +23,7 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { ImageDetailComponent } from './image-detail/image-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
+import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 
 const myapp = initializeApp(environment.firebase);
 
@@ -49,6 +50,8 @@ const myapp = initializeApp(environment.firebase);
     provideStorage(()=> getStorage()),
     BrowserAnimationsModule,
     MatDialogModule,
+    CdkDrag,
+    CdkDropList
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}

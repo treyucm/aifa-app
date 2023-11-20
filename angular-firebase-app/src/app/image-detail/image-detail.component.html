@@ -1,28 +1,26 @@
 <div class="image-detail-container">
     <div class="image-container">
-        <img src="{{imageService.deleteFile}}">
+        <img src="{{this.data.deletefile}}">
     </div>
-    <div id='close'>
-        <button (click)="imageService.closeDetails()">X</button>
+    <div class="col2">
+        <div id="metadata">
+            <h1>
+                File Name: 
+            </h1>
+            <p>
+                Link: <a href="{{this.data.deletefile}}">Link</a>
+            </p>
+            <p>
+                Created:
+            </p>
+            
+        </div>
+        <div>
+            <button id="delete">
+                Delete
+            </button>
+        </div>
     </div>
-    <div id="metadata">
-        <h1>
-            File Name: 
-        </h1>
-        <p>
-            Link: <a href="{{imageService.deleteFile}}">Link</a>
-        </p>
-        <p>
-            Created:
-        </p>
-        
-    </div>
-    <div>
-        <button id="delete" (click)="imageService.deleteData($event)">
-            Delete
-        </button>
-    </div>
-
     
 
 </div>

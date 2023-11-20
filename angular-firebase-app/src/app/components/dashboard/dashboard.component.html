@@ -1,8 +1,6 @@
 <!-- Top navigation -->
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0">
-      <img class="brand-logo" src="assets/logo-positronx-white.svg" alt="positronX.io Logo">
-    </a>
+    
   </nav>
   <!-- Sidebar navigation -->
   <div class="container-fluid">
@@ -41,7 +39,7 @@
                   <p>User ID: <strong>{{user.uid}}</strong></p>
                   <p>Email: <strong>{{user.email}}</strong></p>
                   <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
-                  <p><input type="file" (change)="imageService.onFileChange($event)"></p>
+                  <p><input id="upload" type="file" (change)="imageService.onFileChange($event)"></p>
                   <p><button (click)="imageService.addData()">Upload File...</button></p>
                   <br><br><br>
                   <app-gallery></app-gallery>

@@ -1,123 +1,98 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { ImageService } from '../shared/services/image.service';
-import { Observable } from 'rxjs';
-import { GalleryImage } from '../shared/models/galleryImage.model'; 
 import { AuthService } from '../shared/services/auth.service';
-import { getStorage, ref, uploadBytesResumable, listAll, deleteObject } from "firebase/storage";
-import { getDownloadURL } from "@angular/fire/storage";
+import { getStorage, ref, uploadBytesResumable, listAll, deleteObject, getDownloadURL } from "firebase/storage";
+import { MatDialog} from '@angular/material/dialog'
+import { ImageDetailComponent } from '../image-detail/image-detail.component';
 
 
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
-  styleUrls: ['./gallery.component.css']
+  styleUrls: ['./gallery.component.css'],
+  
 })
 export class GalleryComponent {
 
-  //images: Observable<GalleryImage[]>;
+  /*
+  Displays images from firebase storage
 
-  constructor(public imageService: ImageService, private authService: AuthService){ }
-  public generateGallery : boolean;
+  methods:             uses:                 globals: 
+  onInit():             
+    listFiles()         getDownloadURL        imgList[]; array for URLs  
+
+  imageDetails()        MatDialog             deleteFile{}; URL of a clicked image
+  
+  to add:
+  deleteData()        
+  addData()
+
+  */
+  constructor(
+    imageService: ImageService, 
+    private authService: AuthService,
+    private dialog : MatDialog,
+  ){ }
+
+  private databaseConfig ={
+    databaseURL: 'https://fir-app-demo-acd72-default-rtdb.firebaseio.com',
+  };
   private storage = getStorage();
-  public imgList = [];
-  private canGenerateGallery:boolean;
+  imgList = [];
+  deleteFile: any = {};
 
-  galleryBuild(){
-    //this.imageService.listFiles();
-    console.log("initialized~!")
-
-    //console.log(this.imageService.imgList);
-    var gallery: HTMLElement = document.querySelector('#gallery');
-    var getVal = function (elem : HTMLElement, style) { return parseInt(window.getComputedStyle(elem).getPropertyValue(style)); };
-    var getHeight = function (item) { return item.querySelector('.content').getBoundingClientRect().height; };
-    var resizeAll = function () {
-      var altura = getVal(gallery, 'grid-auto-rows');
-      var gap = getVal(gallery, 'grid-row-gap');
-      gallery.querySelectorAll('.gallery-item').forEach(function (item:HTMLElement) {
-        var el: HTMLElement = item;
-        el.style.gridRowEnd = "span " + Math.ceil((getHeight(item) + gap) / (altura + gap));
-      });
-    };
-    gallery.querySelectorAll('img').forEach(function (item) {
-      item.classList.add('byebye');
-      if (item.complete) {
-        console.log(item.src);
-      }
-      else {
-        item.addEventListener('load', function () {
-            var altura = getVal(gallery, 'grid-auto-rows');
-            var gap = getVal(gallery, 'grid-row-gap');
-            var gitem = item.parentElement.parentElement;
-            gitem.style.gridRowEnd = "span " + Math.ceil((getHeight(gitem) + gap) / (altura + gap));
-            item.classList.remove('byebye');
-        });
-      }
-    });
-    window.addEventListener('resize', resizeAll);
-    //gallery.querySelectorAll('.gallery-item').forEach(function (item) {
-     // item.addEventListener('click', function () {        
-    //    item.classList.toggle('full');        
-    //  });
-   // });
-  }
-  createFlag(){
-    //console.log(this.imageService.canGenerateGallery)
-    if(this.imageService.canGenerateGallery == true || this.imageService.canGenerateGallery != undefined){
-      console.log('resetting...');
-      setTimeout(this.createFlag, 1000);
-      
-    }else if(this.imageService.canGenerateGallery == undefined || this.imageService.canGenerateGallery == false){
-      
-      console.log('resetting...');
-      setTimeout(this.createFlag, 1000);
-    }
-  }
+  //writeUserData(){
+    //  set(ref_database(this.database,'users/XLTngMhS5zQnPw3F2LOTkxf6w5n2'),{
+    //    username: 'trey',
+    //    email: 'testing',
+    //    profilePicture: 'url'
+    //  })
+  // }
+  
+  /*creates storage reference based on user data
+    generates url list and builds html for gallery
+    TODO: build html for gallery                  */
   listFiles(){
     const listRef = ref(this.storage,'users/' + "/" + this.authService.userData.uid);
-    //this.canGenerateGallery = false;
-    listAll(listRef)
-  .then((res) => {
-
-    console.log(res.items.length);
-    /*res.prefixes.forEach((folderRef) => {
-      // All the prefixes under listRef.
-      // You may call listAll() recursively on them.
-      //listAll(folderRef);
-    });*/
-    res.items.forEach((itemRef) => {
+    listAll(listRef).then((res) => {
+      res.items.forEach((itemRef) => {
       // All the items under listRef.
-      
         getDownloadURL(itemRef).then((downloadURL) => {
           console.log('File available at ', downloadURL);
           this.imgList.push(downloadURL);
-          if(res.items.length == this.imgList.length){
-            this.canGenerateGallery = true;
-            console.log("gallery ready!" + this.canGenerateGallery)
-            this.galleryBuild();
-          }
-            //this.gallery.galleryBuild();
         });      
+      });
+    }).catch((error) => {
+      // Uh-oh, an error occurred!
     });
-    //console.log("returning..." + this.imgList[0]);
-    //return this.imgList;
-  })
-  .catch((error) => {
-    // Uh-oh, an error occurred!
-  });
-}
-  ngOnInit(){
+  }
+  /*
+    opens image detail component in matDialog
+    sends matDialogData
 
-    //this.images = this.imageService.getImages();
-    //this.imageService.getImages();
-    //console.log("gallery")
-    //this.imageService.listFiles();
-    this.listFiles();
-   
-    //this.createFlag();
+    todo
+    receive back changed matDialogData
+    update database and storage
+    needs encapsulation?
+  */
+  imageDetails(event) {
+    this.deleteFile = event.target.src;
+    const imageSize = event.target.imageHeight;
+    const testWidth = event.target.imageWidth;
+    let dialogRef = this.dialog.open(ImageDetailComponent, {
+      height: imageSize,
+      width: testWidth,
+      maxHeight: '90vh',
+      maxWidth: '90vw',
+      hasBackdrop: true,
+      backdropClass: 'image-details',
+      data:{
+        deletefile: this.deleteFile
+      }
+    }).beforeClosed()
   }
-  ngOnChanges(){
-    //this.images = this.imageService.getImages();
-    //this.imageService.listFiles();
-    //this.galleryBuild();
+  ngOnInit(){
+    this.listFiles()
   }
+  ngOnChanges(){}
 }

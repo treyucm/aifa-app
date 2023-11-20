@@ -1,0 +1,10 @@
+.image-detail-container{
+    display:flex;
+}
+
+.image-container
+img{
+    max-width: 70vw;
+    max-height: 90vh;
+    object-fit: cover;
+}
