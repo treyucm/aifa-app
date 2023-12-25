@@ -32,6 +32,7 @@ import { AsyncPipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SeasonGreetingComponent } from './components/season-greeting/season-greeting.component';
 import { SeasonGiftComponent } from './components/season-gift/season-gift.component';
+import { SafePipe } from './shared/services/safe.pipe';
 const myapp = initializeApp(environment.firebase);
 
 
@@ -46,7 +47,8 @@ const myapp = initializeApp(environment.firebase);
     GalleryComponent,
     ImageDetailComponent,
     SeasonGreetingComponent,
-    SeasonGiftComponent
+    SeasonGiftComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule,
