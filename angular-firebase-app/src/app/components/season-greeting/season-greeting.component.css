@@ -10,6 +10,7 @@ body {
     margin: auto;
     padding: 25vh 0;
     position: inherit;
+    
   }
   .box, .lid {
     background:
@@ -20,12 +21,16 @@ body {
     background-size: 50px 50px;
     position: relative;
     margin: auto;
+    
   }
   .box {
     width: 400px;
     height: 250px;
+    transform:translate(0,300px);
+    animation-name:example2;
+    animation-duration:4s;
   }
-  .lid {
+  .lid{
     width: 400px;
     height: 70px;
     box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
@@ -35,10 +40,53 @@ body {
     /* transitions */
     top: 0;
     left: 0;
-    transition: 
-      top ease-out 0.5s,
-      left ease-out 0.5s,
-      transform ease-out 0.5s;
+    
+    
+   animation-name:example;
+   animation-duration:2.6s;
+   transform:rotateZ(10deg);
+
+
+    
+  }
+  @keyframes example{
+    10%{
+      transform: rotateZ(5deg);
+    }
+    20%{
+        transform:rotateZ(-5deg)
+    }
+    30%{
+      transform: rotateZ(3deg);
+    }
+    65%{
+      transform: rotateZ(-4deg);
+    }
+    100%{
+        transform:rotateZ(10deg);
+
+    }
+
+  }
+  @keyframes example2{
+    0%{
+        transform:translate(0,0px)
+    }
+    10%{
+        
+    }
+    20%{
+       
+    }
+    30%{
+        
+    }
+    50%{
+       transform:translate(0,0px) 
+    }
+    100%{
+        transform:translate(0,300px)
+    }
   }
   .box span, .lid span {
     position: absolute;
@@ -61,16 +109,16 @@ body {
   }
   .promo {
     font-size: 30px;
-    color: white;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: rgb(179, 8, 8);
+    font-family: Segoe Script;
     text-align: center;
     position: relative;
     height: 0;
     top: 10px;
-    transition: all ease-out 0.7s;
+    /*transition: all ease-out 0.7s;*/
   }
   .promo p {
-    font-size: 24px;
+    font-size: 48px;
     margin: 0;
   }
   .promo h2 {
@@ -78,23 +126,32 @@ body {
     margin: 0;
   }
   
-  /* hover effects */
-  .present:hover .lid {
+  /* hover effects 
+  .present:hover  .lid {
     top: -100px;
     transform: rotateZ(10deg);
     left: 10px;
+    transition: all ease-in 1s;
   }
   .present:hover .promo {
     top: -80px;
   }
-  .mainContainer{
-    display: flex;   
-    height: 100vh;
-    width: 100vw;
-      
+  .present:hover .box{
+    transform:rotateZ(-20deg);
+    transform:translate(0,300px);
+    transition: all ease-in 1s;
   }
-  img{
-    
-    width:100%;
-
+ */
+ 
+ 
+  iframe{
+    transition: opacity 200ms, display 200ms;
+ 
+    opacity: 1;
+    position:relative;
+    z-index:2;
+  
+  }
+  .giphy-embed{
+    z-index: 2;
   }

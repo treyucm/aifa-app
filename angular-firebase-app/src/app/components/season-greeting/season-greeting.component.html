@@ -12,6 +12,26 @@
                 <div class="promo">
                     <p>Merry Christmas,</p>
                     <div id="name">{{this.userName}}</div>
+                                <!---will create button with ternary operator and click function--->
+                <button (click)="onclick()" type="button" class="btn  btn-danger">
+                    {{ReadMore?"Hide Gif":"Click to see the Gif!"}}
+                </button>
+  
+              <!--will create if condition my default it will
+                b hide on click it will toggle--->
+                <div>
+                <ng-container *ngIf="visible">
+                    <iframe src="https://giphy.com/embed/R7AW255ijTdV6" width="300" height="288" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/christmas-winter-phmwMLY1kkkMg"></a></p>
+                    
+                </ng-container>
+                </div>
+  
+                        
+                   
+                 
+                   
+                    
+                
                 </div>
                 <div class="box">
                     <span></span>
