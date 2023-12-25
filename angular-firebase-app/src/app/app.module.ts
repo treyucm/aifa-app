@@ -24,7 +24,14 @@ import { ImageDetailComponent } from './image-detail/image-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
-
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { AsyncPipe } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SeasonGreetingComponent } from './components/season-greeting/season-greeting.component';
+import { SeasonGiftComponent } from './components/season-gift/season-gift.component';
 const myapp = initializeApp(environment.firebase);
 
 
@@ -37,7 +44,9 @@ const myapp = initializeApp(environment.firebase);
     ForgotPasswordComponent,
     VerifyEmailComponent,
     GalleryComponent,
-    ImageDetailComponent
+    ImageDetailComponent,
+    SeasonGreetingComponent,
+    SeasonGiftComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +60,13 @@ const myapp = initializeApp(environment.firebase);
     BrowserAnimationsModule,
     MatDialogModule,
     CdkDrag,
-    CdkDropList
+    CdkDropList,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    AsyncPipe,
+    ReactiveFormsModule
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}

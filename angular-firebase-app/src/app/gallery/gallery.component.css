@@ -1,5 +1,5 @@
 body {
-    background-color: #eee;
+  background-color: #eee;
   }
   .gallery {
     display: grid;
@@ -19,6 +19,7 @@ body {
     display:grid;
     place-items: center;
   }
+  .content
   img{  
     width: 150px;
     height: 150px;
@@ -27,6 +28,121 @@ body {
     transition: all 1.5s ease;
     object-fit: cover;
   }
-  img:hover {
+  .content img:hover {
     box-shadow: 0 0 32px #333;
   }
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */
+    --mat-option-selected-state-label-text-color: black !important;
+    --mdc-filled-text-field-container-color: transparent!important;
+    --mat-option-selected-state-label-text-color: black!important;
+    --mat-option-label-text-color: black !important;
+    --mdc-filled-text-field-focus-label-text-color: black!important;
+    --mat-autocomplete-background-color: #68676752!important;
+    --mdc-filled-text-field-input-text-placeholder-color: rgba(0, 0, 0, 0.50)!important;
+    --mdc-filled-text-field-active-indicator-color: rgba(0, 0, 0, 0.50)!important;
+    --mat-option-selected-state-label-text-color: #515151!important;
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .image-detail-container{
+    display:flex;
+}
+
+.image-container
+img{
+    max-width: 70vw;
+    max-height: 90vh;
+    object-fit: cover;
+}
+.chips-container { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 10px; 
+  width: max-content; 
+  margin: auto; 
+  margin-top: 80px; 
+} 
+
+.chip { 
+  display: flex; 
+  align-items: center; 
+  background-color: #f0f0f0; 
+  border: 1px solid #ccc; 
+  border-radius: 20px; 
+  gap: 5px; 
+} 
+
+.chip-avatar { 
+  width: 24px; 
+  height: 24px; 
+  border-radius: 50%; 
+  background-color: grey; 
+  text-align: center; 
+  line-height: 23px; 
+} 
+
+.close-icon { 
+  cursor: pointer; 
+  margin: 0px 8px; 
+  font-weight: bold; 
+  color: red; 
+} 
+
+.add-chip { 
+  display: flex; 
+  align-items: center; 
+  margin: 10px; 
+  /* border: 2px solid red; */
+  width: max-content; 
+  margin: auto; 
+  margin-top: 50px; 
+} 
+
+#nameInput, 
+#profileIconInput { 
+  padding: 10px; 
+  border-radius: 20px; 
+  border: 1px solid #ccc; 
+  margin-right: 10px; 
+} 
+
+#addChipForm button { 
+  background-color: #007bff; 
+  color: #fff; 
+  border: none; 
+  border-radius: 20px; 
+  padding: 10px 10px; 
+  cursor: pointer; 
+}

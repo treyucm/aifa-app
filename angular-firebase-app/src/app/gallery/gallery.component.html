@@ -1,10 +1,90 @@
 <body>
-    <h1>Database Test Button</h1> <button>Clicky</button>
+  <h1>Database Test Button</h1> 
+  <button (click)="this.writeUserData()">Clicky</button>
 
-    <div class="gallery" id="gallery">
-        <div class="gallery-item" id="gallery-item"*ngFor="let i of this.imgList">
-            <div class="content" id="content"><img src="{{i}}" alt=""(click)='this.imageDetails($event)'></div>
-        </div>  
-    </div>
+    <!--test button for modal-->
+  <button (click)="this.displayModal()">modal test</button>
+
+    <!--The Modal-->
+  <div id="myModal" class="modal">
+        <!-- Modal content -->
+    <div class="modal-content">
+
+          <!--image detail-->
+      <div class="image-detail-container">
+        <div class="image-container">
+          <img src="{{this.deleteFile}}">
+        </div>
+        <div class="col2">
+          <div id="metadata">
+            <h1>File Name: </h1>
+
+            <p>Link: <a href="{{this.deleteFile}}">Link</a></p>
+
+            <p>Created: </p>
+
+         
+              
+
+              <!--form id="addChipForm" class="add-chip"--> 
+                <input type="text" id="nameInput" 
+                       placeholder="Chip Name"/> 
+                <button (click)="addTag()"> 
+                    Add Chip 
+                </button> 
+              <!--/form-->
+              <div class="tagGrid">
+              <div class="tagRow"*ngFor="let fruit of fruits" (removed)="remove(fruit)">
+                <button type="button" class="badge badge-pill badge-primary">
+                  {{fruit}} <span class="badge badge-light">x</span>
+                </button>
+              </div>
+              </div>
+              <div class="chips-container"> 
+                <!-- Existing chips go here -->
+              </div> 
+              <!--- mat chip
+              <form>
+
+              <mat-form-field class="example-chip-list">
+                <label>Tag your image!</label>
+                <mat-chip-grid #chipGrid aria-label="Fruit selection">
+                  <mat-chip-row *ngFor="let fruit of fruits" (removed)="remove(fruit)">
+                    {{fruit}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + fruit">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                </mat-chip-grid>
+                <input placeholder="New Tag..." #fruitInput [formControl]="fruitCtrl"
+                  [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="add($event)"/>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                  <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+                    {{fruit}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              </form>
+              -->
+          </div>
+          <div>
+                <button id="delete">
+                    Delete
+                </button>
+          </div>
+        </div>
+      </div>
+
+    </div>   
+  </div>   
+
+  <div class="gallery" id="gallery">
+      <div class="gallery-item" id="gallery-item"*ngFor="let i of this.imgList">
+          <div class="content" id="content"><img src="{{i}}" alt=""(click)='this.imageDetails($event)'></div>
+      </div>  
+  </div>  
+
 </body>   
 

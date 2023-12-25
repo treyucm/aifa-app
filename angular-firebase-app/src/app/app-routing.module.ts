@@ -7,8 +7,12 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { ImageDetailComponent } from './image-detail/image-detail.component';
 import { AuthGuard } from './shared/guard/auth.guard';
+import { SeasonGiftComponent } from './components/season-gift/season-gift.component';
+import { SeasonGreetingComponent } from './components/season-greeting/season-greeting.component';
 const routes: Routes = [
-  { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
+  { path: '', redirectTo: '/season-greeting', pathMatch: 'full' },
+  { path: 'season-greeting', component: SeasonGreetingComponent },
+  { path: 'season-gift', component: SeasonGiftComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'register-user', component: SignUpComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
